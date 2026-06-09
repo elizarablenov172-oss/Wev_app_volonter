@@ -3,10 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Coins, LogOut, ChevronDown } from "lucide-react";
+import { Bell, LogOut, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import type { Role } from "@prisma/client";
-import { cn, formatTokens } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { BalanceChip } from "@/components/domain/balance-chip";
 import { getNavForRole, type NavItem } from "./nav-config";
 
 export interface AppShellUser {
@@ -118,13 +119,9 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
 
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Чип баланса токенов (янтарь — только фон+иконка, текст тёмный). */}
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full bg-warning-soft px-3 py-1.5 text-sm font-bold text-warning-strong"
-            title="Баланс токенов"
-          >
-            <Coins className="size-4" aria-hidden />
-            <span className="tabular">{formatTokens(user.balance)}</span>
-          </span>
+          <Link href="/wallet" aria-label="Кошелёк">
+            <BalanceChip value={user.balance} />
+          </Link>
 
           <button
             type="button"
