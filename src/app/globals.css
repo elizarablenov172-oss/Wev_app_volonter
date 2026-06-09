@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/*
+  Дизайн-код «Евразия» — DIGITAL-палитра (из официального брендбука).
+  🟣 #511CE9 фиолетовый (primary) · 🔴 #F30C42 малиновый (danger/accent)
+  🟢 #88B04B зелёный (success / +токены) · 🟡 #FFAD00 янтарный (валюта/warning)
+  Шрифт: Montserrat (основной), Akrobat (доп., fallback → Montserrat 800).
+*/
+
+@theme {
+  /* Поверхности и текст (чистый светлый фон по брендбуку) */
+  --color-background: #fafafc;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f4f7;
+  --color-foreground: #11121c;
+  --color-muted: #676a7a;
+  --color-border: #e4e4ec;
+
+  /* Primary — фиолетовый */
+  --color-primary: #511ce9;
+  --color-primary-hover: #4315c4;
+  --color-primary-active: #360f9e;
+  --color-primary-soft: #ede9fd;
+  --color-on-primary: #ffffff;
+
+  /* Success — зелёный (для текста используем затемнённый strong, контраст AA) */
+  --color-success: #88b04b;
+  --color-success-strong: #5f7d2e;
+  --color-success-soft: #e8f0d7;
+
+  /* Warning / токены — янтарный (только фон-soft + тёмный текст, как текст на белом не использовать) */
+  --color-warning: #ffad00;
+  --color-warning-strong: #9a6800;
+  --color-warning-soft: #fff0cc;
+
+  /* Danger — малиновый */
+  --color-danger: #f30c42;
+  --color-danger-strong: #cc0834;
+  --color-danger-soft: #fdd6df;
+
+  /* Токены (валюта) = янтарь; знаки начисления/списания */
+  --color-tokens: #ffad00;
+  --color-tokens-plus: #5f7d2e;
+  --color-tokens-minus: #cc0834;
+
+  /* Шрифты */
+  --font-sans: var(--font-montserrat), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-akrobat), var(--font-montserrat), system-ui, sans-serif;
+
+  /* Радиусы */
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Тени */
+  --shadow-sm: 0 1px 2px 0 rgb(17 18 28 / 0.05);
+  --shadow-md: 0 4px 12px -2px rgb(17 18 28 / 0.08);
+  --shadow-lg: 0 12px 28px -6px rgb(17 18 28 / 0.12);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Числа токенов: моноширинные цифры, чтобы не «прыгали» при анимации счётчика */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

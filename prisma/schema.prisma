@@ -1,0 +1,446 @@
+// Платформа волонтёрских мероприятий с Social Tokens (НКО «Евразия»)
+// Модель данных — покрывает ТЗ §4 (основные + дополнительные сущности).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────── Enums ───────────────────────────
+
+enum Role {
+  VOLUNTEER
+  ORGANIZATION
+  ADMIN
+  PARTNER
+}
+
+enum OrgStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum EventStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+enum ParticipationStatus {
+  REGISTERED
+  CHECKED_IN
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum CheckInMethod {
+  QR
+  GEO
+  ORG_CONFIRM
+}
+
+enum TxType {
+  EARN_EVENT
+  EARN_PROFILE
+  EARN_MISSION
+  EARN_BONUS
+  SPEND_REWARD
+  REFUND
+  ADMIN_ADJUST
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum MissionStatus {
+  AVAILABLE
+  ACCEPTED
+  PENDING_REVIEW
+  COMPLETED
+  REJECTED
+  EXPIRED
+}
+
+enum ProofMethod {
+  OAUTH
+  UTM_LINK
+  PROMO_QR
+  SCREENSHOT
+}
+
+enum RewardType {
+  DISCOUNT
+  GOODS
+  SERVICE
+  EVENT_ACCESS
+  TRIP
+  EDUCATION
+  MERCH
+  PARTNER_OFFER
+}
+
+enum RedemptionStatus {
+  CREATED
+  PENDING_APPROVAL
+  APPROVED
+  ISSUED
+  CANCELLED
+  REFUNDED
+}
+
+enum NotifType {
+  EVENT
+  REMINDER
+  TOKEN_EARN
+  NEW_REWARD
+  FRIEND_REQUEST
+  NEW_MESSAGE
+  NEW_MISSION
+  MISSION_STATUS
+  REWARD_PURCHASE
+  REDEMPTION_STATUS
+}
+
+enum FeedVisibility {
+  PUBLIC
+  FRIENDS
+  PRIVATE
+}
+
+// ─────────────────────────── Модели ───────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VOLUNTEER)
+
+  // Соц-профиль (ТЗ 3.3)
+  displayName  String
+  nickname     String?  @unique
+  avatarUrl    String?
+  city         String?
+  interests    String[]
+  bio          String?
+  contactPhone String?
+  socialLinks  Json? // [{ platform, url }]
+  privacy      Json? // { contacts: bool, socials: bool, feed: 'PUBLIC'|'FRIENDS'|'PRIVATE' }
+
+  levelId       String?
+  isBlocked     Boolean  @default(false)
+  cachedBalance Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  level Level? @relation(fields: [levelId], references: [id])
+
+  organization       Organization?
+  partner            Partner?
+  participations     Participation[]
+  transactions       TokenTransaction[]
+  missionSubmissions MissionSubmission[]
+  redemptions        RewardRedemption[]
+  feedItems          ActivityFeedItem[]
+  notifications      Notification[]
+  badges             UserBadge[]
+
+  sentFriendRequests     Friendship[] @relation("FriendRequester")
+  receivedFriendRequests Friendship[] @relation("FriendAddressee")
+  dialogsAsA             Dialog[]     @relation("DialogUserA")
+  dialogsAsB             Dialog[]     @relation("DialogUserB")
+  messages               Message[]
+}
+
+model Organization {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  name        String
+  description String?
+  contacts    Json?
+  status      OrgStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events Event[]
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  brandName   String
+  description String?
+  status      OrgStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rewards Reward[]
+}
+
+model Event {
+  id             String      @id @default(cuid())
+  organizationId String
+  title          String
+  description    String
+  startsAt       DateTime
+  location       String
+  geoLat         Float?
+  geoLng         Float?
+  capacity       Int
+  category       String
+  rewardTokens   Int         @default(0) // назначает админ при модерации
+  status         EventStatus @default(DRAFT)
+  qrSecret       String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  participations  Participation[]
+
+  @@index([status, startsAt])
+  @@index([category])
+}
+
+model Participation {
+  id            String              @id @default(cuid())
+  userId        String
+  eventId       String
+  status        ParticipationStatus @default(REGISTERED)
+  checkInMethod CheckInMethod?
+  checkedInAt   DateTime?
+  confirmedById String?
+  rewarded      Boolean             @default(false)
+  createdAt     DateTime            @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@index([eventId, status])
+}
+
+// Журнал операций с токенами — ИСТОЧНИК ИСТИНЫ для баланса (ТЗ 3.14)
+model TokenTransaction {
+  id             String   @id @default(cuid())
+  userId         String
+  amount         Int // + начисление / − списание
+  type           TxType
+  reason         String
+  ruleId         String?
+  refType        String?
+  refId          String?
+  idempotencyKey String?  @unique // антифрод: одно начисление на действие
+  createdBy      String?
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// Правила начисления за заполнение профиля (ТЗ 3.9), настраиваются админом
+model ProfileCompletionRule {
+  id         String  @id @default(cuid())
+  actionKey  String  @unique // ADD_CONTACTS | ADD_PHOTO | ADD_SOCIAL_LINK | FILL_FIELDS | PROFILE_80
+  title      String
+  tokens     Int
+  perAction  Boolean @default(true)
+  limitCount Int?
+  isActive   Boolean @default(true)
+}
+
+model Mission {
+  id           String      @id @default(cuid())
+  title        String
+  description  String
+  targetUrl    String?
+  instruction  String?
+  rewardTokens Int
+  deadline     DateTime?
+  audience     String?
+  proofMethod  ProofMethod @default(SCREENSHOT)
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+
+  submissions MissionSubmission[]
+}
+
+model MissionSubmission {
+  id            String        @id @default(cuid())
+  missionId     String
+  userId        String
+  status        MissionStatus @default(ACCEPTED)
+  proofUrl      String?
+  proofData     Json?
+  reviewedById  String?
+  reviewedAt    DateTime?
+  moderatorNote String?
+  createdAt     DateTime      @default(now())
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([missionId, userId])
+}
+
+model Reward {
+  id               String     @id @default(cuid())
+  partnerId        String?
+  title            String
+  description      String
+  type             RewardType @default(DISCOUNT)
+  costTokens       Int
+  stock            Int?
+  expiresAt        DateTime?
+  conditions       String?
+  imageUrl         String?
+  requiresApproval Boolean    @default(false)
+  isActive         Boolean    @default(true)
+  createdAt        DateTime   @default(now())
+
+  partner     Partner?           @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  redemptions RewardRedemption[]
+}
+
+model RewardRedemption {
+  id          String           @id @default(cuid())
+  userId      String
+  rewardId    String
+  costTokens  Int
+  status      RedemptionStatus @default(CREATED)
+  code        String?
+  purchasedAt DateTime         @default(now())
+  issuedAt    DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reward Reward @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Friendship {
+  id          String       @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      FriendStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  requester User @relation("FriendRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("FriendAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+}
+
+model Dialog {
+  id        String   @id @default(cuid())
+  userAId   String
+  userBId   String
+  createdAt DateTime @default(now())
+
+  userA    User      @relation("DialogUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB    User      @relation("DialogUserB", fields: [userBId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([userAId, userBId])
+}
+
+model Message {
+  id        String    @id @default(cuid())
+  dialogId  String
+  senderId  String
+  text      String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  dialog Dialog @relation(fields: [dialogId], references: [id], onDelete: Cascade)
+  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([dialogId, createdAt])
+}
+
+model ActivityFeedItem {
+  id         String         @id @default(cuid())
+  userId     String
+  type       String // EVENT_JOIN | MISSION_DONE | BADGE | REWARD_BUY | LEVEL_UP
+  refType    String?
+  refId      String?
+  text       String
+  visibility FeedVisibility @default(PUBLIC)
+  createdAt  DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      NotifType
+  title     String
+  body      String?
+  refType   String?
+  refId     String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+model Level {
+  id        String @id @default(cuid())
+  name      String
+  minTokens Int
+  order     Int
+
+  users User[]
+}
+
+model Badge {
+  id          String  @id @default(cuid())
+  code        String  @unique
+  name        String
+  description String?
+  iconUrl     String?
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  adminId    String
+  action     String // APPROVE_ORG | SET_REWARD | BLOCK_USER | ADJUST_TOKENS | ...
+  targetType String?
+  targetId   String?
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([adminId, createdAt])
+}

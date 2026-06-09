@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: volonter_pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: volonter
+      POSTGRES_PASSWORD: volonter
+      POSTGRES_DB: volonter
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U volonter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Локальный SMTP для e-mail-уведомлений (UI на http://localhost:8025)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: volonter_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:
