@@ -68,10 +68,10 @@ export function AppShell({ user, children }: AppShellProps) {
         loggingOut={loggingOut}
       />
 
-      <div className="mx-auto flex w-full max-w-screen-xl flex-1">
+      <div className="mx-auto flex w-full max-w-[1680px] flex-1">
         <Sidebar nav={nav} pathname={pathname} />
 
-        <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10 lg:px-10 lg:pt-8">
+        <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10 lg:px-10 lg:pt-8 xl:px-12">
           {children}
         </main>
       </div>
@@ -114,7 +114,7 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between gap-3 px-4 md:px-6">
+      <div className="mx-auto flex h-14 max-w-[1680px] items-center justify-between gap-3 px-4 md:px-6 lg:px-10 xl:px-12">
         <Link href="/feed" className="flex items-center gap-2.5">
           <span
             className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
@@ -224,7 +224,7 @@ function Sidebar({ nav, pathname }: { nav: NavItem[]; pathname: string }) {
   }
 
   return (
-    <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-56 shrink-0 border-r border-border px-3 py-5 md:block">
+    <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-60 shrink-0 border-r border-border px-3 py-5 md:block xl:w-64">
       <nav className="flex flex-col gap-5">
         {groups.map((group, gi) => (
           <div key={`${group.key}-${gi}`} className="flex flex-col gap-0.5">
