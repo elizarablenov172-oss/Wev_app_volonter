@@ -66,7 +66,7 @@ export default function Home() {
     <main className="min-h-dvh bg-background">
       {/* ── Шапка лендинга ── */}
       <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <div className="flex h-14 w-full items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-14">
           <Link href="/" className="flex items-center gap-2.5">
             <span
               className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
@@ -99,7 +99,7 @@ export default function Home() {
 
       {/* ── Hero — структурный, левое выравнивание, без градиентного пятна ── */}
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-20">
+        <div className="grid w-full gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] lg:items-center lg:gap-16 lg:px-10 lg:py-20 xl:px-14">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-1.5 rounded-sm bg-primary-soft px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.04em] text-primary ring-1 ring-inset ring-primary/15">
               НКО «Евразия»
@@ -190,7 +190,7 @@ export default function Home() {
 
       {/* ── Как это работает — три шага ── */}
       <section className="border-b border-border">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+        <div className="w-full px-4 py-14 sm:px-6 lg:px-10 xl:px-14">
           <div className="max-w-xl">
             <h2 className="text-2xl font-bold tracking-[-0.02em] sm:text-3xl">
               Как это работает
@@ -228,7 +228,7 @@ export default function Home() {
 
       {/* ── Возможности — плотная сетка, бордеры вместо теней ── */}
       <section>
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+        <div className="w-full px-4 py-14 sm:px-6 lg:px-10 xl:px-14">
           <div className="max-w-xl">
             <h2 className="text-2xl font-bold tracking-[-0.02em] sm:text-3xl">
               Всё в одном месте
@@ -237,7 +237,7 @@ export default function Home() {
               Платформа для волонтёров, организаций и брендов-партнёров.
             </p>
           </div>
-          <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2">
+          <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((f) => {
               const Icon = f.icon;
               return (
@@ -284,7 +284,7 @@ export default function Home() {
 
       {/* ── Подвал ── */}
       <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-8 text-xs text-muted sm:px-6">
+        <div className="flex w-full flex-col gap-1 px-4 py-8 text-xs text-muted sm:px-6 lg:px-10 xl:px-14">
           <span className="font-semibold text-foreground">
             НКО «Евразия» · Континент возможностей
           </span>
