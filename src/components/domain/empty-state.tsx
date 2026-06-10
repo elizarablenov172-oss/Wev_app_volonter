@@ -1,10 +1,10 @@
 import * as React from "react";
-import type { LucideIcon } from "lucide-react";
-import { Inbox } from "lucide-react";
+import type { Icon } from "@phosphor-icons/react";
+import { Tray } from "@phosphor-icons/react/dist/ssr";
 import { cn } from "@/lib/utils";
 
 export interface EmptyStateProps {
-  icon?: LucideIcon;
+  icon?: Icon;
   title: string;
   description?: string;
   /** Опциональная кнопка-призыв к действию. */
@@ -17,7 +17,7 @@ export interface EmptyStateProps {
  * (+ опц. CTA). Используется для пустой ленты, истории, наград.
  */
 export function EmptyState({
-  icon: Icon = Inbox,
+  icon: Icon = Tray,
   title,
   description,
   action,
@@ -26,18 +26,18 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-surface px-6 py-12 text-center",
+        "flex flex-col items-center gap-3 rounded-md border border-dashed border-border-strong bg-surface px-6 py-10 text-center",
         className,
       )}
     >
       <span
-        className="flex size-14 items-center justify-center rounded-full bg-primary-soft text-primary"
+        className="flex size-11 items-center justify-center rounded-md bg-surface-muted text-muted ring-1 ring-inset ring-border"
         aria-hidden
       >
-        <Icon className="size-7" />
+        <Icon className="size-[1.375rem]" weight="duotone" />
       </span>
       <div className="space-y-1">
-        <p className="font-bold">{title}</p>
+        <p className="text-sm font-semibold text-foreground">{title}</p>
         {description && (
           <p className="mx-auto max-w-sm text-sm text-muted">{description}</p>
         )}

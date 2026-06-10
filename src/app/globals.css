@@ -1,69 +1,114 @@
 @import "tailwindcss";
 
 /*
-  Дизайн-код «Евразия» — DIGITAL-палитра (из официального брендбука).
-  🟣 #511CE9 фиолетовый (primary) · 🔴 #F30C42 малиновый (danger/accent)
-  🟢 #88B04B зелёный (success / +токены) · 🟡 #FFAD00 янтарный (валюта/warning)
-  Шрифт: Montserrat (основной), Akrobat (доп., fallback → Montserrat 800).
+  Дизайн-система «Евразия» — визуальный язык «ЧИСТЫЙ ФИНТЕХ».
+  Каркас строится на:
+   • нейтральной серой шкале (neutral-50..950) для поверхностей/бордеров/текста;
+   • hairline-бордерах 1px вместо теней (тени — максимум тонкий shadow-sm);
+   • точечном использовании primary как акцента (CTA, активная навигация, ссылки);
+   • семантических цветах только для данных/статусов.
+
+  Бренд «Евразия» (digital-палитра, официальный брендбук):
+   🟣 #511CE9 фиолетовый (primary) · 🔴 #F30C42 малиновый (danger)
+   🟢 #88B04B зелёный (success / +токены) · 🟡 #FFAD00 янтарный (валюта/токены)
+   Шрифт: Montserrat.
+   ⚠️ Янтарь/зелёный как текст на белом НЕ используем — только soft-фон + затемнённый текст.
 */
 
 @theme {
-  /* Поверхности и текст (чистый светлый фон по брендбуку) */
-  --color-background: #fafafc;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f4f4f7;
-  --color-foreground: #11121c;
-  --color-muted: #676a7a;
-  --color-border: #e4e4ec;
+  /* ── Нейтральная шкала (профессиональный серый каркас, оттенок zinc/slate) ──
+     Чуть холодная, с лёгким фиолетовым подтоном, чтобы дружить с primary. */
+  --color-neutral-50: #fafafb;
+  --color-neutral-100: #f4f4f6;
+  --color-neutral-200: #e7e7ec;
+  --color-neutral-300: #d3d3dc;
+  --color-neutral-400: #a0a0ad;
+  --color-neutral-500: #71717f;
+  --color-neutral-600: #54545f;
+  --color-neutral-700: #3f3f48;
+  --color-neutral-800: #27272e;
+  --color-neutral-900: #18181d;
+  --color-neutral-950: #0e0e12;
 
-  /* Primary — фиолетовый */
+  /* ── Семантические поверхности и текст (поверх нейтральной шкалы) ── */
+  --color-background: #f7f7f9; /* холст приложения — нейтральный, не белый */
+  --color-surface: #ffffff; /* карточки/панели */
+  --color-surface-muted: #f4f4f6; /* подложки, нажатые состояния, скелетоны */
+  --color-foreground: #18181d; /* основной текст */
+  --color-muted: #71717f; /* вторичный текст (контраст AA на белом) */
+  --color-border: #e7e7ec; /* hairline-бордер 1px — основной структурный элемент */
+  --color-border-strong: #d3d3dc; /* акцентный разделитель/инпуты при наведении */
+
+  /* ── Primary — фиолетовый (акцент: CTA, активная навигация, ссылки) ── */
   --color-primary: #511ce9;
   --color-primary-hover: #4315c4;
   --color-primary-active: #360f9e;
-  --color-primary-soft: #ede9fd;
+  --color-primary-soft: #ede9fd; /* мягкий фон активных пунктов/чипов */
   --color-on-primary: #ffffff;
 
-  /* Success — зелёный (для текста используем затемнённый strong, контраст AA) */
+  /* ── Success — зелёный (для текста только затемнённый strong, контраст AA) ── */
   --color-success: #88b04b;
-  --color-success-strong: #5f7d2e;
-  --color-success-soft: #e8f0d7;
+  --color-success-strong: #4f6a26;
+  --color-success-soft: #eaf1da;
 
-  /* Warning / токены — янтарный (только фон-soft + тёмный текст, как текст на белом не использовать) */
+  /* ── Warning / токены — янтарный (только soft-фон + тёмный текст) ── */
   --color-warning: #ffad00;
-  --color-warning-strong: #9a6800;
-  --color-warning-soft: #fff0cc;
+  --color-warning-strong: #8a5d00;
+  --color-warning-soft: #fff1cf;
 
-  /* Danger — малиновый */
+  /* ── Danger — малиновый ── */
   --color-danger: #f30c42;
-  --color-danger-strong: #cc0834;
-  --color-danger-soft: #fdd6df;
+  --color-danger-strong: #c0082f;
+  --color-danger-soft: #fde0e7;
 
-  /* Токены (валюта) = янтарь; знаки начисления/списания */
+  /* ── Токены (валюта) = янтарь; знаки начисления/списания ── */
   --color-tokens: #ffad00;
-  --color-tokens-plus: #5f7d2e;
-  --color-tokens-minus: #cc0834;
+  --color-tokens-plus: #4f6a26;
+  --color-tokens-minus: #c0082f;
 
-  /* Шрифты */
+  /* ── Шрифты ── */
   --font-sans: var(--font-montserrat), system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-akrobat), var(--font-montserrat), system-ui, sans-serif;
+  --font-display: var(--font-montserrat), system-ui, sans-serif;
 
-  /* Радиусы */
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  /* ── Радиусы (финтех: сдержанные, не «всё подряд круглое») ── */
+  --radius-sm: 0.375rem; /* 6px — инпуты, кнопки, мелкие чипы */
+  --radius-md: 0.5rem; /* 8px — карточки, поповеры */
+  --radius-lg: 0.75rem; /* 12px — крупные контейнеры */
+  --radius-xl: 1rem;
 
-  /* Тени */
-  --shadow-sm: 0 1px 2px 0 rgb(17 18 28 / 0.05);
-  --shadow-md: 0 4px 12px -2px rgb(17 18 28 / 0.08);
-  --shadow-lg: 0 12px 28px -6px rgb(17 18 28 / 0.12);
+  /* ── Тени (тонкие; структуру держат бордеры, а не тени) ── */
+  --shadow-xs: 0 1px 1px 0 rgb(24 24 29 / 0.04);
+  --shadow-sm: 0 1px 2px 0 rgb(24 24 29 / 0.06), 0 1px 1px -1px rgb(24 24 29 / 0.04);
+  --shadow-md: 0 4px 10px -3px rgb(24 24 29 / 0.08);
+  --shadow-lg: 0 10px 24px -6px rgb(24 24 29 / 0.1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
+  font-feature-settings: "cv01", "ss01";
+  letter-spacing: -0.006em; /* лёгкий tracking для плотной, «дорогой» типографики */
 }
 
-/* Числа токенов: моноширинные цифры, чтобы не «прыгали» при анимации счётчика */
+/* Заголовки — плотнее по трекингу, типичный финтех-приём. */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+/* Числа (баланс, токены, проценты): моноширинные цифры — банковская выписка
+   не «прыгает» при анимации и аккуратно выравнивается по правому краю. */
 .tabular {
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Тонкая нейтральная линейка-скроллбар (вебкит) — мелочь, но «не шаблонно». */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
 }

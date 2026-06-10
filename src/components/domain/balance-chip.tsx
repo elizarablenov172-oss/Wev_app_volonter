@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Coins } from "lucide-react";
+import { Coins } from "@phosphor-icons/react/dist/ssr";
 import { cn, formatTokens } from "@/lib/utils";
 
 export interface BalanceChipProps
@@ -12,8 +12,8 @@ export interface BalanceChipProps
 }
 
 const SIZE: Record<NonNullable<BalanceChipProps["size"]>, string> = {
-  sm: "px-2.5 py-1 text-xs gap-1",
-  md: "px-3 py-1.5 text-sm gap-1.5",
+  sm: "px-2 py-1 text-xs gap-1",
+  md: "px-2.5 py-1.5 text-sm gap-1.5",
   lg: "px-4 py-2 text-lg gap-2",
 };
 
@@ -37,15 +37,19 @@ export function BalanceChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full bg-warning-soft font-bold text-warning-strong",
+        "inline-flex items-center rounded-sm bg-warning-soft font-bold text-warning-strong ring-1 ring-inset ring-warning-strong/15",
         SIZE[size],
         className,
       )}
       title="Баланс токенов"
       {...props}
     >
-      <Coins className={cn("shrink-0", ICON_SIZE[size])} aria-hidden />
-      <span className="tabular">{formatTokens(value)}</span>
+      <Coins
+        className={cn("shrink-0 text-tokens", ICON_SIZE[size])}
+        weight="duotone"
+        aria-hidden
+      />
+      <span className="tabular tracking-[-0.01em]">{formatTokens(value)}</span>
       {withLabel && <span className="font-semibold">токенов</span>}
     </span>
   );

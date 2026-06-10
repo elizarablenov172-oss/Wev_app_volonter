@@ -1,14 +1,14 @@
 import * as React from "react";
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@phosphor-icons/react";
 import {
   CalendarCheck,
-  CircleCheckBig,
-  Award,
+  CheckCircle,
+  Medal,
   Gift,
-  UserRoundPlus,
-  TrendingUp,
-  Sparkles,
-} from "lucide-react";
+  UserPlus,
+  TrendUp,
+  Sparkle,
+} from "@phosphor-icons/react/dist/ssr";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,7 +26,7 @@ export interface FeedItemData {
 }
 
 interface FeedTypeMeta {
-  icon: LucideIcon;
+  icon: Icon;
   /** Tailwind-классы фона/текста иконки. */
   tone: string;
 }
@@ -36,23 +36,23 @@ interface FeedTypeMeta {
  * + затемнённый текст (контраст AA).
  */
 const TYPE_META: Record<string, FeedTypeMeta> = {
-  EVENT_JOIN: { icon: CalendarCheck, tone: "bg-primary-soft text-primary" },
+  EVENT_JOIN: { icon: CalendarCheck, tone: "bg-primary-soft text-primary ring-primary/15" },
   MISSION_DONE: {
-    icon: CircleCheckBig,
-    tone: "bg-success-soft text-success-strong",
+    icon: CheckCircle,
+    tone: "bg-success-soft text-success-strong ring-success-strong/15",
   },
-  BADGE: { icon: Award, tone: "bg-warning-soft text-warning-strong" },
-  REWARD_BUY: { icon: Gift, tone: "bg-danger-soft text-danger-strong" },
+  BADGE: { icon: Medal, tone: "bg-warning-soft text-warning-strong ring-warning-strong/15" },
+  REWARD_BUY: { icon: Gift, tone: "bg-danger-soft text-danger-strong ring-danger-strong/15" },
   PROFILE_COMPLETE: {
-    icon: UserRoundPlus,
-    tone: "bg-primary-soft text-primary",
+    icon: UserPlus,
+    tone: "bg-primary-soft text-primary ring-primary/15",
   },
-  LEVEL_UP: { icon: TrendingUp, tone: "bg-success-soft text-success-strong" },
+  LEVEL_UP: { icon: TrendUp, tone: "bg-success-soft text-success-strong ring-success-strong/15" },
 };
 
 const FALLBACK_META: FeedTypeMeta = {
-  icon: Sparkles,
-  tone: "bg-surface-muted text-muted",
+  icon: Sparkle,
+  tone: "bg-surface-muted text-muted ring-border",
 };
 
 /** Извлекает «+N»/«−N» токенов из текста записи (если упомянуты). */
@@ -88,10 +88,10 @@ export function FeedItem({ item }: FeedItemProps) {
     <Card>
       <CardContent className="flex items-start gap-3 py-4">
         <span
-          className={`flex size-10 shrink-0 items-center justify-center rounded-full ${meta.tone}`}
+          className={`flex size-10 shrink-0 items-center justify-center rounded-sm ring-1 ring-inset ${meta.tone}`}
           aria-hidden
         >
-          <Icon className="size-5" />
+          <Icon className="size-5" weight="duotone" />
         </span>
         <div className="min-w-0 flex-1 space-y-1">
           <p className="text-sm leading-snug text-foreground">{item.text}</p>

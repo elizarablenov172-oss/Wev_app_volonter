@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle, Plus, X } from "lucide-react";
+import { CircleNotch, Plus, X } from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -306,7 +306,7 @@ export function ProfileEditForm({ initial }: ProfileEditFormProps) {
                     className="flex size-11 shrink-0 items-center justify-center rounded-md border border-border text-muted transition-colors hover:bg-danger-soft hover:text-danger-strong"
                     aria-label="Удалить ссылку"
                   >
-                    <X className="size-4" aria-hidden />
+                    <X className="size-4" weight="bold" aria-hidden />
                   </button>
                 </li>
               ))}
@@ -317,7 +317,7 @@ export function ProfileEditForm({ initial }: ProfileEditFormProps) {
             onClick={addSocialLink}
             className="inline-flex h-10 items-center gap-1.5 rounded-md border border-dashed border-border px-4 text-sm font-semibold text-primary transition-colors hover:bg-primary-soft"
           >
-            <Plus className="size-4" aria-hidden />
+            <Plus className="size-4" weight="bold" aria-hidden />
             Добавить ссылку
           </button>
         </CardContent>
@@ -356,7 +356,7 @@ export function ProfileEditForm({ initial }: ProfileEditFormProps) {
 
       <div className="flex gap-3">
         <Button type="submit" disabled={saving}>
-          {saving && <LoaderCircle className="size-4 animate-spin" aria-hidden />}
+          {saving && <CircleNotch className="size-4 animate-spin" weight="bold" aria-hidden />}
           {saving ? "Сохранение…" : "Сохранить"}
         </Button>
         <Button

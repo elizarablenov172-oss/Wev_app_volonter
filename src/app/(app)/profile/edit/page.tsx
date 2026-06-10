@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { CaretLeft } from "@phosphor-icons/react/dist/ssr";
 import { requireUser } from "@/server/auth";
 import {
   parsePrivacy,
@@ -26,13 +26,13 @@ export default async function ProfileEditPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
+    <div className="mx-auto max-w-3xl space-y-5">
       <div className="space-y-1">
         <Link
           href="/profile"
           className="inline-flex items-center gap-1 text-sm font-semibold text-muted transition-colors hover:text-foreground"
         >
-          <ChevronLeft className="size-4" aria-hidden />
+          <CaretLeft className="size-4" weight="bold" aria-hidden />
           К профилю
         </Link>
         <h1 className="text-2xl font-bold tracking-tight">

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Coins } from "lucide-react";
+import { Coins } from "@phosphor-icons/react/dist/ssr";
 import { cn, formatTokens } from "@/lib/utils";
 
 export type TokenSign = "plus" | "minus" | "neutral";
@@ -49,7 +49,13 @@ export function TokenAmount({
       )}
       {...props}
     >
-      {withIcon && <Coins className="size-4 shrink-0" aria-hidden />}
+      {withIcon && (
+        <Coins
+          className="size-4 shrink-0 text-tokens"
+          weight="duotone"
+          aria-hidden
+        />
+      )}
       <span>
         {SIGN_PREFIX[sign]}
         {formatTokens(magnitude)}

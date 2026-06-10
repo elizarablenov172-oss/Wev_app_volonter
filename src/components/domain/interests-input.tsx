@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus } from "@phosphor-icons/react/dist/ssr";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -64,15 +64,15 @@ export function InterestsInput({
         <ul className="flex flex-wrap gap-2">
           {value.map((tag, i) => (
             <li key={`${tag}-${i}`}>
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft py-1 pl-3 pr-1.5 text-sm font-semibold text-primary">
+              <span className="inline-flex items-center gap-1 rounded-sm bg-primary-soft py-1 pl-2.5 pr-1 text-sm font-semibold text-primary ring-1 ring-inset ring-primary/15">
                 {tag}
                 <button
                   type="button"
                   onClick={() => removeTag(i)}
-                  className="flex size-5 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/15"
+                  className="flex size-5 items-center justify-center rounded-sm text-primary transition-colors hover:bg-primary/15"
                   aria-label={`Удалить интерес «${tag}»`}
                 >
-                  <X className="size-3.5" aria-hidden />
+                  <X className="size-3.5" weight="bold" aria-hidden />
                 </button>
               </span>
             </li>
@@ -100,7 +100,7 @@ export function InterestsInput({
             "hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50",
           )}
         >
-          <Plus className="size-4" aria-hidden />
+          <Plus className="size-4" weight="bold" aria-hidden />
           Добавить
         </button>
       </div>

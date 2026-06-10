@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { Link as LinkIcon, Phone } from "lucide-react";
+import { LinkSimple, Phone } from "@phosphor-icons/react/dist/ssr";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/server/auth";
 import { parsePrivacy, parseSocialLinks } from "@/lib/validators/profile";
@@ -57,84 +57,99 @@ export default async function PublicProfilePage({
     (showContacts && Boolean(user.contactPhone)) || socialLinks.length > 0;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
-      <ProfileHeader
-        displayName={user.displayName}
-        nickname={user.nickname}
-        avatarUrl={user.avatarUrl}
-        city={user.city}
-        levelName={user.level?.name}
-        isOwner={false}
-        stats={{
-          events: eventsCount,
-          friends: friendsCount,
-          balance: user.cachedBalance,
-        }}
-      />
+    // ПК (≥lg): личность слева (липкая), активность справа. Телефон (<lg): стопка.
+    <div className="lg:grid lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start lg:gap-6">
+      {/* Левая колонка — личность */}
+      <div className="space-y-5 lg:sticky lg:top-20">
+        <ProfileHeader
+          layout="compact"
+          displayName={user.displayName}
+          nickname={user.nickname}
+          avatarUrl={user.avatarUrl}
+          city={user.city}
+          levelName={user.level?.name}
+          isOwner={false}
+          stats={{
+            events: eventsCount,
+            friends: friendsCount,
+            balance: user.cachedBalance,
+          }}
+        />
 
-      {user.bio && (
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
-          <h2 className="mb-2 text-sm font-bold text-muted">О себе</h2>
-          <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
-            {user.bio}
-          </p>
-        </div>
-      )}
+        {user.bio && (
+          <section className="rounded-lg border border-border bg-surface shadow-xs">
+            <h2 className="border-b border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.04em] text-muted">
+              О себе
+            </h2>
+            <p className="whitespace-pre-line px-5 py-4 text-sm leading-relaxed text-foreground">
+              {user.bio}
+            </p>
+          </section>
+        )}
 
-      {user.interests.length > 0 && (
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
-          <h2 className="mb-3 text-sm font-bold text-muted">Интересы</h2>
-          <ul className="flex flex-wrap gap-2">
-            {user.interests.map((tag) => (
-              <li key={tag}>
-                <span className="inline-flex rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary">
-                  {tag}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {user.interests.length > 0 && (
+          <section className="rounded-lg border border-border bg-surface shadow-xs">
+            <h2 className="border-b border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.04em] text-muted">
+              Интересы
+            </h2>
+            <ul className="flex flex-wrap gap-2 px-5 py-4">
+              {user.interests.map((tag) => (
+                <li key={tag}>
+                  <span className="inline-flex rounded-sm bg-primary-soft px-2.5 py-1 text-sm font-semibold text-primary ring-1 ring-inset ring-primary/15">
+                    {tag}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-      {hasContactsBlock && (
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
-          <h2 className="mb-3 text-sm font-bold text-muted">Контакты</h2>
-          <ul className="space-y-2">
-            {showContacts && user.contactPhone && (
-              <li className="flex items-center gap-2 text-sm">
-                <Phone className="size-4 text-muted" aria-hidden />
-                <a
-                  href={`tel:${user.contactPhone}`}
-                  className="font-semibold text-primary hover:underline"
-                >
-                  {user.contactPhone}
-                </a>
-              </li>
-            )}
-            {socialLinks.map((link, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm">
-                <LinkIcon className="size-4 text-muted" aria-hidden />
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="break-all font-semibold text-primary hover:underline"
-                >
-                  {PLATFORM_LABEL[link.platform] ?? link.platform}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {hasContactsBlock && (
+          <section className="rounded-lg border border-border bg-surface shadow-xs">
+            <h2 className="border-b border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.04em] text-muted">
+              Контакты
+            </h2>
+            <ul className="divide-y divide-border">
+              {showContacts && user.contactPhone && (
+                <li className="flex items-center gap-3 px-5 py-3 text-sm">
+                  <Phone className="size-4 shrink-0 text-muted" weight="duotone" aria-hidden />
+                  <a
+                    href={`tel:${user.contactPhone}`}
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    {user.contactPhone}
+                  </a>
+                </li>
+              )}
+              {socialLinks.map((link, i) => (
+                <li key={i} className="flex items-center gap-3 px-5 py-3 text-sm">
+                  <LinkSimple className="size-4 shrink-0 text-muted" weight="duotone" aria-hidden />
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="break-all font-semibold text-primary hover:underline"
+                  >
+                    {PLATFORM_LABEL[link.platform] ?? link.platform}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
 
-      {/* Лента — только PUBLIC (API сам отдаёт пусто, если не PUBLIC). */}
-      {privacy.feed === "PUBLIC" && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-bold">Активность</h2>
+      {/* Правая колонка — активность */}
+      <div className="mt-5 space-y-3 lg:mt-0">
+        <h2 className="text-sm font-bold tracking-[-0.01em]">Активность</h2>
+        {privacy.feed === "PUBLIC" ? (
           <ActivityFeed userId={user.id} isOwner={false} />
-        </div>
-      )}
+        ) : (
+          <div className="rounded-lg border border-dashed border-border-strong bg-surface px-6 py-10 text-center text-sm text-muted">
+            Пользователь скрыл ленту активности настройками приватности.
+          </div>
+        )}
+      </div>
     </div>
   );
 }

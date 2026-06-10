@@ -29,17 +29,17 @@ export function Switch({
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
       className={cn(
-        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+        "relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35 focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        checked ? "bg-primary" : "bg-surface-muted border border-border",
+        checked ? "bg-primary" : "border border-border-strong bg-surface-muted",
       )}
       {...aria}
     >
       <span
         className={cn(
-          "inline-block size-5 rounded-full bg-surface shadow-sm transition-transform",
-          checked ? "translate-x-5" : "translate-x-0.5",
+          "inline-block size-4 rounded-full bg-surface shadow-sm transition-transform",
+          checked ? "translate-x-[1.125rem]" : "translate-x-0.5",
         )}
       />
     </button>

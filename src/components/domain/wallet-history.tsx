@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Wallet } from "lucide-react";
+import { Wallet } from "@phosphor-icons/react/dist/ssr";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAsyncResource } from "@/lib/use-async-resource";
@@ -70,7 +70,7 @@ export function WalletHistory() {
   }
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="divide-y divide-border overflow-hidden">
       {state.data.map((tx) => (
         <WalletHistoryRow key={tx.id} tx={tx} />
       ))}

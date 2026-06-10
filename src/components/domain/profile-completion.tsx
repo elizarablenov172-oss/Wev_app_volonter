@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkle } from "@phosphor-icons/react/dist/ssr";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +30,7 @@ export function ProfileCompletion({
       <CardContent className="space-y-3 py-4">
         <div className="flex items-center justify-between gap-2">
           <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
-            <Sparkles className="size-4 text-primary" aria-hidden />
+            <Sparkle className="size-4 text-primary" weight="duotone" aria-hidden />
             Заполнение профиля
           </span>
           <span className="tabular text-sm font-bold text-foreground">
@@ -57,7 +57,7 @@ export function ProfileCompletion({
 
         <p className="text-sm text-muted">
           {isComplete ? (
-            "Профиль заполнен — отличная работа! 🎉"
+            "Профиль заполнен — отличная работа."
           ) : (
             <>
               Заполни профиль и получи токены.{" "}

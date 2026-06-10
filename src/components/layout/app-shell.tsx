@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, LogOut, ChevronDown } from "lucide-react";
+import { BellSimple, SignOut, CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
@@ -71,7 +71,7 @@ export function AppShell({ user, children }: AppShellProps) {
       <div className="mx-auto flex w-full max-w-screen-xl flex-1">
         <Sidebar nav={nav} pathname={pathname} />
 
-        <main className="min-w-0 flex-1 px-4 pb-24 pt-5 md:px-6 md:pb-8">
+        <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10 lg:px-10 lg:pt-8">
           {children}
         </main>
       </div>
@@ -80,6 +80,13 @@ export function AppShell({ user, children }: AppShellProps) {
     </div>
   );
 }
+
+/** Заголовки групп бокового меню. */
+const GROUP_LABEL: Record<NonNullable<NavItem["group"]>, string> = {
+  main: "Основное",
+  account: "Аккаунт",
+  manage: "Управление",
+};
 
 // ─────────────────────────── TopBar ───────────────────────────
 
@@ -106,77 +113,95 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
   }, [menuOpen, onToggleMenu]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-3 px-4 md:px-6">
-        <Link href="/feed" className="flex items-baseline gap-2">
-          <span className="font-display text-xl font-extrabold tracking-tight text-primary">
-            Евразия
+    <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between gap-3 px-4 md:px-6">
+        <Link href="/feed" className="flex items-center gap-2.5">
+          <span
+            className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
+            aria-hidden
+          >
+            Е
           </span>
-          <span className="hidden text-xs text-muted sm:inline">
-            Континент возможностей
+          <span className="flex flex-col leading-none">
+            <span className="text-[0.9375rem] font-bold tracking-[-0.02em] text-foreground">
+              Евразия
+            </span>
+            <span className="mt-0.5 hidden text-[0.625rem] font-medium uppercase tracking-[0.08em] text-muted sm:inline">
+              Континент возможностей
+            </span>
           </span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Чип баланса токенов (янтарь — только фон+иконка, текст тёмный). */}
-          <Link href="/wallet" aria-label="Кошелёк">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Чип «кошелёк» с балансом токенов (янтарь — только фон+иконка, текст тёмный). */}
+          <Link
+            href="/wallet"
+            aria-label="Кошелёк"
+            className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
+          >
             <BalanceChip value={user.balance} />
           </Link>
 
           <button
             type="button"
-            className="relative flex size-10 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
+            className="relative flex size-9 items-center justify-center rounded-sm text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
             aria-label="Уведомления"
           >
-            <Bell className="size-5" aria-hidden />
+            <BellSimple className="size-[1.125rem]" weight="duotone" aria-hidden />
           </button>
+
+          <span className="mx-0.5 hidden h-5 w-px bg-border sm:block" aria-hidden />
 
           {/* Меню пользователя */}
           <div className="relative" ref={menuRef}>
             <button
               type="button"
               onClick={onToggleMenu}
-              className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 transition-colors hover:bg-surface-muted"
+              className="flex items-center gap-2 rounded-sm py-1 pl-1 pr-1.5 transition-colors hover:bg-surface-muted"
               aria-haspopup="menu"
               aria-expanded={menuOpen}
             >
-              <span className="flex size-8 items-center justify-center rounded-full bg-primary-soft text-sm font-bold text-primary">
+              <span className="flex size-7 items-center justify-center rounded-sm bg-primary-soft text-[0.8125rem] font-bold text-primary ring-1 ring-inset ring-primary/10">
                 {user.displayName.charAt(0).toUpperCase()}
               </span>
               <span className="hidden max-w-32 truncate text-sm font-semibold md:inline">
                 {user.displayName}
               </span>
-              <ChevronDown className="hidden size-4 text-muted md:inline" aria-hidden />
+              <CaretDown className="hidden size-3.5 text-muted md:inline" weight="bold" aria-hidden />
             </button>
 
             {menuOpen && (
               <div
                 role="menu"
-                className="absolute right-0 mt-2 w-56 overflow-hidden rounded-lg border border-border bg-surface shadow-lg"
+                className="absolute right-0 mt-2 w-56 overflow-hidden rounded-md border border-border bg-surface shadow-md"
               >
-                <div className="border-b border-border px-4 py-3">
+                <div className="border-b border-border px-3.5 py-3">
                   <div className="truncate text-sm font-semibold">
                     {user.displayName}
                   </div>
-                  <div className="text-xs text-muted">{ROLE_LABEL[user.role]}</div>
+                  <div className="mt-0.5 text-xs text-muted">
+                    {ROLE_LABEL[user.role]}
+                  </div>
                 </div>
                 <Link
                   href="/profile"
                   role="menuitem"
-                  className="block px-4 py-2.5 text-sm transition-colors hover:bg-surface-muted"
+                  className="block px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-surface-muted"
                 >
                   Мой профиль
                 </Link>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={onLogout}
-                  disabled={loggingOut}
-                  className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-danger-strong transition-colors hover:bg-danger-soft disabled:opacity-50"
-                >
-                  <LogOut className="size-4" aria-hidden />
-                  {loggingOut ? "Выходим…" : "Выйти"}
-                </button>
+                <div className="border-t border-border">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={onLogout}
+                    disabled={loggingOut}
+                    className="flex w-full items-center gap-2 px-3.5 py-2.5 text-left text-sm font-medium text-danger-strong transition-colors hover:bg-danger-soft disabled:opacity-50"
+                  >
+                    <SignOut className="size-4" weight="duotone" aria-hidden />
+                    {loggingOut ? "Выходим…" : "Выйти"}
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -189,29 +214,56 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
 // ─────────────────────────── Sidebar (≥ md) ───────────────────────────
 
 function Sidebar({ nav, pathname }: { nav: NavItem[]; pathname: string }) {
+  // Группируем пункты по смысловым блокам, сохраняя исходный порядок групп.
+  const groups: { key: NonNullable<NavItem["group"]>; items: NavItem[] }[] = [];
+  for (const item of nav) {
+    const key = item.group ?? "main";
+    const last = groups[groups.length - 1];
+    if (last && last.key === key) last.items.push(item);
+    else groups.push({ key, items: [item] });
+  }
+
   return (
-    <aside className="sticky top-16 hidden h-[calc(100dvh-4rem)] w-60 shrink-0 border-r border-border px-3 py-5 md:block">
-      <nav className="flex flex-col gap-1">
-        {nav.map((item) => {
-          const active = isActive(pathname, item.href);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold transition-colors",
-                active
-                  ? "bg-primary-soft text-primary"
-                  : "text-muted hover:bg-surface-muted hover:text-foreground",
-              )}
-              aria-current={active ? "page" : undefined}
-            >
-              <Icon className="size-5 shrink-0" aria-hidden />
-              {item.label}
-            </Link>
-          );
-        })}
+    <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-56 shrink-0 border-r border-border px-3 py-5 md:block">
+      <nav className="flex flex-col gap-5">
+        {groups.map((group, gi) => (
+          <div key={`${group.key}-${gi}`} className="flex flex-col gap-0.5">
+            <span className="mb-1 px-2.5 text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-muted/70">
+              {GROUP_LABEL[group.key]}
+            </span>
+            {group.items.map((item) => {
+              const active = isActive(pathname, item.href);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "group relative flex items-center gap-2.5 rounded-sm px-2.5 py-2 text-sm font-semibold transition-colors",
+                    active
+                      ? "bg-primary-soft text-primary"
+                      : "text-muted hover:bg-surface-muted hover:text-foreground",
+                  )}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {/* Тонкий вертикальный акцент-маркер активного пункта. */}
+                  {active && (
+                    <span
+                      className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-primary"
+                      aria-hidden
+                    />
+                  )}
+                  <Icon
+                    className="size-[1.125rem] shrink-0"
+                    weight={active ? "fill" : "duotone"}
+                    aria-hidden
+                  />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
     </aside>
   );
@@ -221,7 +273,7 @@ function Sidebar({ nav, pathname }: { nav: NavItem[]; pathname: string }) {
 
 function BottomNav({ nav, pathname }: { nav: NavItem[]; pathname: string }) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 backdrop-blur md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden">
       <ul className="mx-auto grid max-w-screen-xl grid-cols-5">
         {nav.map((item) => {
           const active = isActive(pathname, item.href);
@@ -231,19 +283,16 @@ function BottomNav({ nav, pathname }: { nav: NavItem[]; pathname: string }) {
               <Link
                 href={item.href}
                 className={cn(
-                  "flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 py-2 text-[11px] font-semibold transition-colors",
+                  "flex min-h-14 flex-col items-center justify-center gap-1 px-1 pb-1.5 pt-2 text-[0.625rem] font-semibold tracking-[-0.01em] transition-colors",
                   active ? "text-primary" : "text-muted hover:text-foreground",
                 )}
                 aria-current={active ? "page" : undefined}
               >
-                <span
-                  className={cn(
-                    "flex size-9 items-center justify-center rounded-full transition-colors",
-                    active && "bg-primary-soft",
-                  )}
-                >
-                  <Icon className="size-5" aria-hidden />
-                </span>
+                <Icon
+                  className="size-[1.375rem]"
+                  weight={active ? "fill" : "duotone"}
+                  aria-hidden
+                />
                 {item.label}
               </Link>
             </li>

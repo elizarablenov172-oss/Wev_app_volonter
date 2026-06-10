@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Camera, LoaderCircle } from "lucide-react";
+import { Camera, CircleNotch } from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 
 export interface AvatarUploaderProps {
@@ -114,7 +114,7 @@ export function AvatarUploader({
         )}
         {uploading && (
           <span className="absolute inset-0 flex items-center justify-center rounded-full bg-foreground/40">
-            <LoaderCircle className="size-6 animate-spin text-white" aria-hidden />
+            <CircleNotch className="size-6 animate-spin text-white" weight="bold" aria-hidden />
           </span>
         )}
       </div>
@@ -126,7 +126,7 @@ export function AvatarUploader({
           disabled={uploading}
           className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-surface px-4 text-sm font-semibold transition-colors hover:bg-surface-muted disabled:opacity-50"
         >
-          <Camera className="size-4" aria-hidden />
+          <Camera className="size-4" weight="duotone" aria-hidden />
           {uploading ? "Загрузка…" : "Загрузить фото"}
         </button>
         <p className="text-xs text-muted">PNG, JPG или WebP, до 5 МБ</p>

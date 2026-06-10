@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/** Карточка — белая поверхность с тенью на холодно-белом фоне. */
+/** Карточка — белая поверхность, структуру держит hairline-бордер, тень минимальна. */
 export function Card({
   className,
   ...props
@@ -9,7 +9,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-surface shadow-sm",
+        "rounded-md border border-border bg-surface shadow-xs",
         className,
       )}
       {...props}
@@ -23,7 +23,7 @@ export function CardHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex flex-col gap-1 p-5 pb-3", className)}
+      className={cn("flex flex-col gap-1 p-4 pb-3", className)}
       {...props}
     />
   );
@@ -36,7 +36,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        "text-lg font-bold leading-tight tracking-tight",
+        "text-base font-bold leading-tight tracking-[-0.02em]",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ export function CardContent({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5 pt-0", className)} {...props} />;
+  return <div className={cn("p-4 pt-0", className)} {...props} />;
 }
 
 export function CardFooter({
@@ -64,7 +64,7 @@ export function CardFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex items-center gap-3 p-5 pt-0", className)}
+      className={cn("flex items-center gap-3 p-4 pt-0", className)}
       {...props}
     />
   );

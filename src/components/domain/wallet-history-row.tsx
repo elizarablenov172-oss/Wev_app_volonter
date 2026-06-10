@@ -1,7 +1,7 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { Badge } from "@/components/ui/badge";
+import { ArrowDownLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { TokenAmount } from "./token-amount";
 
 /** Тип транзакции (Prisma TxType). */
@@ -25,29 +25,27 @@ export interface WalletTransaction {
   createdAt: string;
 }
 
-interface TxTypeMeta {
-  label: string;
-  variant: "primary" | "success" | "warning" | "danger" | "muted";
-}
-
-const TYPE_META: Record<string, TxTypeMeta> = {
-  EARN_EVENT: { label: "Мероприятие", variant: "primary" },
-  EARN_PROFILE: { label: "Профиль", variant: "success" },
-  EARN_MISSION: { label: "Задание", variant: "primary" },
-  EARN_BONUS: { label: "Бонус", variant: "success" },
-  SPEND_REWARD: { label: "Награда", variant: "danger" },
-  REFUND: { label: "Возврат", variant: "warning" },
-  ADMIN_ADJUST: { label: "Корректировка", variant: "muted" },
+const TYPE_LABEL: Record<string, string> = {
+  EARN_EVENT: "Мероприятие",
+  EARN_PROFILE: "Профиль",
+  EARN_MISSION: "Задание",
+  EARN_BONUS: "Бонус",
+  SPEND_REWARD: "Награда",
+  REFUND: "Возврат",
+  ADMIN_ADJUST: "Корректировка",
 };
 
 export interface WalletHistoryRowProps {
   tx: WalletTransaction;
 }
 
-/** Строка истории операций: причина, дата, бейдж типа и сумма со знаком. */
+/**
+ * Строка выписки: направленная иконка, причина + категория · дата, сумма ±.
+ * Цвет иконки/суммы по знаку, моноширинные цифры выровнены по правому краю.
+ */
 export function WalletHistoryRow({ tx }: WalletHistoryRowProps) {
-  const meta = TYPE_META[tx.type] ?? { label: tx.type, variant: "muted" as const };
-  const sign = tx.amount < 0 ? "minus" : "plus";
+  const isMinus = tx.amount < 0;
+  const label = TYPE_LABEL[tx.type] ?? tx.type;
 
   let dateLabel = "";
   const parsed = new Date(tx.createdAt);
@@ -56,25 +54,42 @@ export function WalletHistoryRow({ tx }: WalletHistoryRowProps) {
   }
 
   return (
-    <div className="flex items-center gap-3 border-b border-border px-4 py-3.5 last:border-b-0">
-      <div className="min-w-0 flex-1 space-y-1">
+    <div className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-muted/60">
+      {/* Направленная иконка операции: soft-фон + затемнённая иконка (контраст AA). */}
+      <span
+        className={`flex size-9 shrink-0 items-center justify-center rounded-sm ring-1 ring-inset ${
+          isMinus
+            ? "bg-danger-soft text-tokens-minus ring-danger-strong/15"
+            : "bg-success-soft text-tokens-plus ring-success-strong/15"
+        }`}
+        aria-hidden
+      >
+        {isMinus ? (
+          <ArrowUpRight className="size-[1.125rem]" weight="bold" />
+        ) : (
+          <ArrowDownLeft className="size-[1.125rem]" weight="bold" />
+        )}
+      </span>
+
+      <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-foreground">
           {tx.reason}
         </p>
-        <div className="flex items-center gap-2">
-          <Badge variant={meta.variant}>{meta.label}</Badge>
+        <p className="mt-0.5 truncate text-xs text-muted">
+          {label}
           {dateLabel && (
-            <time dateTime={tx.createdAt} className="text-xs text-muted">
-              {dateLabel}
-            </time>
+            <>
+              {" · "}
+              <time dateTime={tx.createdAt}>{dateLabel}</time>
+            </>
           )}
-        </div>
+        </p>
       </div>
+
       <TokenAmount
         value={tx.amount}
-        sign={sign}
-        withIcon
-        className="shrink-0"
+        sign={isMinus ? "minus" : "plus"}
+        className="shrink-0 text-sm"
       />
     </div>
   );

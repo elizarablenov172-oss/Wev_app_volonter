@@ -7,15 +7,15 @@ import { cn } from "@/lib/utils";
  * янтарь/зелёный — только soft-фон + затемнённый текст (на белом как текст не используем).
  */
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap",
+  "inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-[0.6875rem] font-semibold uppercase tracking-[0.02em] whitespace-nowrap ring-1 ring-inset",
   {
     variants: {
       variant: {
-        primary: "bg-primary-soft text-primary",
-        success: "bg-success-soft text-success-strong",
-        warning: "bg-warning-soft text-warning-strong",
-        danger: "bg-danger-soft text-danger-strong",
-        muted: "bg-surface-muted text-muted",
+        primary: "bg-primary-soft text-primary ring-primary/15",
+        success: "bg-success-soft text-success-strong ring-success-strong/15",
+        warning: "bg-warning-soft text-warning-strong ring-warning-strong/15",
+        danger: "bg-danger-soft text-danger-strong ring-danger-strong/15",
+        muted: "bg-surface-muted text-muted ring-border",
       },
     },
     defaultVariants: { variant: "muted" },

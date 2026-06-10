@@ -30,50 +30,63 @@ export default async function ProfilePage() {
   const completion = computeProfileCompletion(user);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
-      <ProfileHeader
-        displayName={user.displayName}
-        nickname={user.nickname}
-        avatarUrl={user.avatarUrl}
-        city={user.city}
-        levelName={level?.name}
-        isOwner
-        stats={{
-          events: eventsCount,
-          friends: friendsCount,
-          balance: user.cachedBalance,
-        }}
-      />
+    // ПК (≥lg): две колонки — узкая «липкая» панель личности + широкая лента.
+    // Телефон/планшет (<lg): одна колонка, всё стопкой.
+    <div className="lg:grid lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start lg:gap-6">
+      {/* Левая колонка — личность (липкая на ПК) */}
+      <div className="space-y-5 lg:sticky lg:top-20">
+        <ProfileHeader
+          layout="compact"
+          displayName={user.displayName}
+          nickname={user.nickname}
+          avatarUrl={user.avatarUrl}
+          city={user.city}
+          levelName={level?.name}
+          isOwner
+          stats={{
+            events: eventsCount,
+            friends: friendsCount,
+            balance: user.cachedBalance,
+          }}
+        />
 
-      {completion < 100 && (
-        <ProfileCompletion value={completion} editHref="/profile/edit" />
-      )}
+        {completion < 100 && (
+          <ProfileCompletion value={completion} editHref="/profile/edit" />
+        )}
 
-      {user.bio && (
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
-          <h2 className="mb-2 text-sm font-bold text-muted">О себе</h2>
-          <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
-            {user.bio}
-          </p>
-        </div>
-      )}
+        {user.bio && (
+          <section className="rounded-lg border border-border bg-surface shadow-xs">
+            <h2 className="border-b border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.04em] text-muted">
+              О себе
+            </h2>
+            <p className="whitespace-pre-line px-5 py-4 text-sm leading-relaxed text-foreground">
+              {user.bio}
+            </p>
+          </section>
+        )}
 
-      {user.interests.length > 0 && (
-        <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
-          <h2 className="mb-3 text-sm font-bold text-muted">Интересы</h2>
-          <ul className="flex flex-wrap gap-2">
-            {user.interests.map((tag) => (
-              <li key={tag}>
-                <span className="inline-flex rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary">
-                  {tag}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {user.interests.length > 0 && (
+          <section className="rounded-lg border border-border bg-surface shadow-xs">
+            <h2 className="border-b border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.04em] text-muted">
+              Интересы
+            </h2>
+            <ul className="flex flex-wrap gap-2 px-5 py-4">
+              {user.interests.map((tag) => (
+                <li key={tag}>
+                  <span className="inline-flex rounded-sm bg-primary-soft px-2.5 py-1 text-sm font-semibold text-primary ring-1 ring-inset ring-primary/15">
+                    {tag}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
 
-      <ProfileTabs userId={user.id} isOwner />
+      {/* Правая колонка — активность */}
+      <div className="mt-5 lg:mt-0">
+        <ProfileTabs userId={user.id} isOwner />
+      </div>
     </div>
   );
 }

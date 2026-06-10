@@ -1,10 +1,14 @@
 import * as React from "react";
+import type { Icon } from "@phosphor-icons/react";
+import { Wrench } from "@phosphor-icons/react/dist/ssr";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/layout/page-header";
 
 interface PagePlaceholderProps {
   title: string;
   description?: string;
+  /** Иконка пустого состояния (Phosphor). */
+  icon?: Icon;
   children?: React.ReactNode;
 }
 
@@ -12,24 +16,34 @@ interface PagePlaceholderProps {
 export function PagePlaceholder({
   title,
   description,
+  icon: PlaceholderIcon = Wrench,
   children,
 }: PagePlaceholderProps) {
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
-      <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-        <Badge variant="warning">В разработке</Badge>
-      </div>
-      {description && <p className="text-muted">{description}</p>}
+    <div className="space-y-6">
+      <PageHeader
+        title={title}
+        description={description}
+        actions={<Badge variant="warning">В разработке</Badge>}
+      />
+
       {children ?? (
-        <Card>
-          <CardContent className="flex flex-col items-center gap-2 py-12 text-center">
-            <p className="font-semibold">Скоро здесь появится контент</p>
-            <p className="text-sm text-muted">
+        <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-border-strong bg-surface px-6 py-16 text-center">
+          <span
+            className="flex size-12 items-center justify-center rounded-md bg-surface-muted text-muted ring-1 ring-inset ring-border"
+            aria-hidden
+          >
+            <PlaceholderIcon className="size-6" weight="duotone" />
+          </span>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold text-foreground">
+              Скоро здесь появится контент
+            </p>
+            <p className="mx-auto max-w-sm text-sm text-muted">
               Раздел подключается на следующих этапах разработки.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
     </div>
   );

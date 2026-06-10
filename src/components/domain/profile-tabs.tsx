@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CalendarCheck, Gift } from "lucide-react";
+import { CalendarCheck, Gift } from "@phosphor-icons/react/dist/ssr";
 import { cn } from "@/lib/utils";
 import { ActivityFeed } from "./activity-feed";
 import { EmptyState } from "./empty-state";

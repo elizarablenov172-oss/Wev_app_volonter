@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkle } from "@phosphor-icons/react/dist/ssr";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAsyncResource } from "@/lib/use-async-resource";
@@ -43,7 +43,7 @@ export function ActivityFeed({ userId, isOwner = false }: ActivityFeedProps) {
         {[0, 1, 2].map((i) => (
           <Card key={i}>
             <CardContent className="flex items-start gap-3 py-4">
-              <Skeleton className="size-10 shrink-0 rounded-full" />
+              <Skeleton className="size-10 shrink-0 rounded-sm" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-3 w-2/3" />
                 <Skeleton className="h-3 w-1/3" />
@@ -68,7 +68,7 @@ export function ActivityFeed({ userId, isOwner = false }: ActivityFeedProps) {
   if (state.data.length === 0) {
     return (
       <EmptyState
-        icon={Sparkles}
+        icon={Sparkle}
         title="Пока пусто"
         description={
           isOwner
