@@ -68,10 +68,10 @@ export function AppShell({ user, children }: AppShellProps) {
         loggingOut={loggingOut}
       />
 
-      <div className="mx-auto flex w-full max-w-[1680px] flex-1">
+      <div className="flex w-full flex-1">
         <Sidebar nav={nav} pathname={pathname} />
 
-        <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10 lg:px-10 lg:pt-8 xl:px-12">
+        <main className="min-w-0 flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10 lg:px-10 lg:pt-8 xl:px-14">
           {children}
         </main>
       </div>
@@ -114,7 +114,7 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-[1680px] items-center justify-between gap-3 px-4 md:px-6 lg:px-10 xl:px-12">
+      <div className="flex h-14 w-full items-center justify-between gap-3 px-4 md:px-6 lg:px-10 xl:px-14">
         <Link href="/feed" className="flex items-center gap-2.5">
           <span
             className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
