@@ -3,11 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BellSimple, SignOut, CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { SignOut, CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { BalanceChip } from "@/components/domain/balance-chip";
+import { NotificationBell } from "@/components/domain/notification-bell";
 import { getNavForRole, type NavItem } from "./nav-config";
 
 export interface AppShellUser {
@@ -142,13 +143,7 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
             <BalanceChip value={user.balance} />
           </Link>
 
-          <button
-            type="button"
-            className="relative flex size-9 items-center justify-center rounded-sm text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
-            aria-label="Уведомления"
-          >
-            <BellSimple className="size-[1.125rem]" weight="duotone" aria-hidden />
-          </button>
+          <NotificationBell />
 
           <span className="mx-0.5 hidden h-5 w-px bg-border sm:block" aria-hidden />
 
