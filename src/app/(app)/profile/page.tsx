@@ -42,6 +42,7 @@ export default async function ProfilePage() {
           avatarUrl={user.avatarUrl}
           city={user.city}
           levelName={level?.name}
+          userId={user.id}
           isOwner
           stats={{
             events: eventsCount,

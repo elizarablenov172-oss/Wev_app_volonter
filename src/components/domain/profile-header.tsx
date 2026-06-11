@@ -3,8 +3,6 @@ import Link from "next/link";
 import type { Icon } from "@phosphor-icons/react";
 import {
   PencilSimple,
-  UserPlus,
-  ChatCircle,
   MapPin,
   Coins,
   UsersThree,
@@ -12,6 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { ProfileActions } from "@/components/domain/profile-actions";
 import { cn, formatTokens } from "@/lib/utils";
 
 export interface ProfileHeaderStats {
@@ -31,6 +30,8 @@ export interface ProfileHeaderProps {
   /** Название уровня (бейдж). */
   levelName?: string | null;
   stats: ProfileHeaderStats;
+  /** id пользователя профиля — нужен для действий «Добавить»/«Написать». */
+  userId: string;
   /** Свой профиль → кнопка «Редактировать»; чужой → «Добавить»/«Написать». */
   isOwner: boolean;
   /**
@@ -70,6 +71,7 @@ export function ProfileHeader({
   city,
   levelName,
   stats,
+  userId,
   isOwner,
   layout = "wide",
 }: ProfileHeaderProps) {
@@ -163,32 +165,7 @@ export function ProfileHeader({
               Редактировать
             </Link>
           ) : (
-            <>
-              <button
-                type="button"
-                className={cn(
-                  buttonVariants({ variant: "primary", size: "sm" }),
-                  compact && "lg:w-full",
-                )}
-                disabled
-                title="Раздел «Друзья» появится на следующем этапе"
-              >
-                <UserPlus className="size-4" weight="duotone" aria-hidden />
-                Добавить
-              </button>
-              <button
-                type="button"
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "sm" }),
-                  compact && "lg:w-full",
-                )}
-                disabled
-                title="Чат появится на следующем этапе"
-              >
-                <ChatCircle className="size-4" weight="duotone" aria-hidden />
-                Написать
-              </button>
-            </>
+            <ProfileActions userId={userId} compact={compact} />
           )}
         </div>
       </div>

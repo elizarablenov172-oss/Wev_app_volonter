@@ -22,7 +22,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const dialog = await getOrCreateDialog(auth.id, userId);
+    // Администратор может писать любому пользователю (поддержка/модерация).
+    const dialog = await getOrCreateDialog(auth.id, userId, {
+      bypassFriendCheck: auth.role === "ADMIN",
+    });
     return NextResponse.json({ dialogId: dialog.id });
   } catch (e) {
     if (e instanceof SocialError)

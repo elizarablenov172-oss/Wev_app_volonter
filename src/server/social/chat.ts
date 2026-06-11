@@ -18,10 +18,18 @@ function orderPair(a: string, b: string): [string, string] {
   return a < b ? [a, b] : [b, a];
 }
 
-/** Получить (или создать) диалог с другом. */
-export async function getOrCreateDialog(meId: string, otherId: string) {
+/**
+ * Получить (или создать) диалог с другом.
+ * `bypassFriendCheck` — для администратора: писать можно любому пользователю
+ * (поддержка/модерация), без требования дружбы.
+ */
+export async function getOrCreateDialog(
+  meId: string,
+  otherId: string,
+  opts?: { bypassFriendCheck?: boolean },
+) {
   if (meId === otherId) throw new SocialError("SELF", "Нельзя писать самому себе");
-  if (!(await areFriends(meId, otherId)))
+  if (!opts?.bypassFriendCheck && !(await areFriends(meId, otherId)))
     throw new SocialError("FORBIDDEN", "Переписка доступна только с друзьями");
 
   const [userAId, userBId] = orderPair(meId, otherId);

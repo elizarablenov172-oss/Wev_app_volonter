@@ -68,6 +68,7 @@ export default async function PublicProfilePage({
           avatarUrl={user.avatarUrl}
           city={user.city}
           levelName={user.level?.name}
+          userId={user.id}
           isOwner={false}
           stats={{
             events: eventsCount,
