@@ -42,7 +42,6 @@ const volunteerNav: NavItem[] = [
 const orgNav: NavItem[] = [
   { href: "/org", label: "Обзор", icon: House, group: "main", bottom: true },
   { href: "/org/events", label: "Мероприятия", icon: CalendarDots, group: "manage", bottom: true },
-  { href: "/org/participants", label: "Участники", icon: UsersThree, group: "manage", bottom: true },
   { href: "/profile", label: "Профиль", icon: User, group: "account", bottom: true },
 ];
 
