@@ -48,7 +48,7 @@ const orgNav: NavItem[] = [
 const partnerNav: NavItem[] = [
   { href: "/partner", label: "Дашборд", icon: House, group: "main", bottom: true },
   { href: "/partner/rewards", label: "Награды", icon: Gift, group: "manage", bottom: true },
-  { href: "/partner/redemptions", label: "Заявки", icon: Tag, group: "manage", bottom: true },
+  { href: "/partner/redemptions", label: "Выкупы", icon: Tag, group: "manage", bottom: true },
   { href: "/profile", label: "Профиль", icon: User, group: "account", bottom: true },
 ];
 
@@ -56,6 +56,7 @@ const adminNav: NavItem[] = [
   { href: "/admin", label: "Дашборд", icon: House, group: "main", bottom: true },
   { href: "/admin/moderation", label: "Модерация", icon: ShieldCheck, group: "manage", bottom: true },
   { href: "/admin/moderation/events", label: "Мероприятия", icon: CalendarCheck, group: "manage", bottom: true },
+  { href: "/admin/moderation/rewards", label: "Награды", icon: Gift, group: "manage" },
   { href: "/admin/missions", label: "Задания", icon: Megaphone, group: "manage" },
   { href: "/admin/orgs", label: "Организации", icon: Buildings, group: "manage" },
   { href: "/admin/users", label: "Пользователи", icon: UsersThree, group: "manage", bottom: true },
