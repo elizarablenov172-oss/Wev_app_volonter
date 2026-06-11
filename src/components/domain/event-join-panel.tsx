@@ -55,6 +55,7 @@ export function EventJoinPanel({
     initialParticipation,
   );
   const [joining, setJoining] = React.useState(false);
+  const [leaving, setLeaving] = React.useState(false);
 
   const full = event.spotsLeft <= 0;
   const confirmed = participation != null && isConfirmedStatus(participation.status);
@@ -84,6 +85,27 @@ export function EventJoinPanel({
       toast.error(err instanceof Error ? err.message : "Ошибка записи");
     } finally {
       setJoining(false);
+    }
+  }
+
+  async function handleLeave() {
+    setLeaving(true);
+    try {
+      const res = await fetch(`/api/events/${event.id}/leave`, {
+        method: "POST",
+        credentials: "same-origin",
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error ?? "Не удалось отписаться");
+      }
+      setParticipation(null);
+      toast.success("Вы отписались от мероприятия");
+      router.refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Ошибка");
+    } finally {
+      setLeaving(false);
     }
   }
 
@@ -134,6 +156,16 @@ export function EventJoinPanel({
         <p className="text-center text-xs text-muted">
           Отметьтесь на месте через QR-код или геолокацию, чтобы получить токены.
         </p>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full text-danger-strong hover:bg-danger-soft"
+          onClick={handleLeave}
+          disabled={leaving}
+        >
+          {leaving && <CircleNotch className="size-4 animate-spin" weight="bold" aria-hidden />}
+          Отписаться от мероприятия
+        </Button>
       </div>
     );
   } else if (full) {
