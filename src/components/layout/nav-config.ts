@@ -40,21 +40,21 @@ const volunteerNav: NavItem[] = [
 ];
 
 const orgNav: NavItem[] = [
-  { href: "/org", label: "Дашборд", icon: House, group: "main", bottom: true },
+  { href: "/org", label: "Обзор", icon: House, group: "main", bottom: true },
   { href: "/org/events", label: "Мероприятия", icon: CalendarDots, group: "manage", bottom: true },
   { href: "/org/participants", label: "Участники", icon: UsersThree, group: "manage", bottom: true },
   { href: "/profile", label: "Профиль", icon: User, group: "account", bottom: true },
 ];
 
 const partnerNav: NavItem[] = [
-  { href: "/partner", label: "Дашборд", icon: House, group: "main", bottom: true },
+  { href: "/partner", label: "Обзор", icon: House, group: "main", bottom: true },
   { href: "/partner/rewards", label: "Награды", icon: Gift, group: "manage", bottom: true },
   { href: "/partner/redemptions", label: "Выкупы", icon: Tag, group: "manage", bottom: true },
   { href: "/profile", label: "Профиль", icon: User, group: "account", bottom: true },
 ];
 
 const adminNav: NavItem[] = [
-  { href: "/admin", label: "Дашборд", icon: House, group: "main", bottom: true },
+  { href: "/admin", label: "Обзор", icon: House, group: "main", bottom: true },
   { href: "/admin/moderation/events", label: "Мероприятия", icon: CalendarCheck, group: "manage", bottom: true },
   { href: "/admin/moderation/rewards", label: "Награды", icon: Gift, group: "manage" },
   { href: "/admin/missions", label: "Задания", icon: Megaphone, group: "manage", bottom: true },
