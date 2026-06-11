@@ -10,10 +10,11 @@ import {
   ChatCircle,
   Buildings,
   Tag,
-  ShieldCheck,
   CalendarCheck,
   Gift,
   Megaphone,
+  SlidersHorizontal,
+  Receipt,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Role } from "@prisma/client";
 
@@ -54,12 +55,13 @@ const partnerNav: NavItem[] = [
 
 const adminNav: NavItem[] = [
   { href: "/admin", label: "Дашборд", icon: House, group: "main", bottom: true },
-  { href: "/admin/moderation", label: "Модерация", icon: ShieldCheck, group: "manage", bottom: true },
   { href: "/admin/moderation/events", label: "Мероприятия", icon: CalendarCheck, group: "manage", bottom: true },
   { href: "/admin/moderation/rewards", label: "Награды", icon: Gift, group: "manage" },
-  { href: "/admin/missions", label: "Задания", icon: Megaphone, group: "manage" },
+  { href: "/admin/missions", label: "Задания", icon: Megaphone, group: "manage", bottom: true },
   { href: "/admin/orgs", label: "Организации", icon: Buildings, group: "manage" },
   { href: "/admin/users", label: "Пользователи", icon: UsersThree, group: "manage", bottom: true },
+  { href: "/admin/profile-rules", label: "Правила", icon: SlidersHorizontal, group: "manage" },
+  { href: "/admin/tokens-log", label: "Журнал токенов", icon: Receipt, group: "manage" },
 ];
 
 /** Возвращает набор пунктов навигации для роли. */
