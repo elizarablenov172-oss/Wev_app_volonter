@@ -1,4 +1,28 @@
 services:
+  web:
+    build:
+      context: .
+    container_name: volonter_web
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    environment:
+      DATABASE_URL: "postgresql://volonter:volonter@postgres:5432/volonter?schema=public"
+      AUTH_SECRET: "${AUTH_SECRET:-change-me}"
+      AUTH_TRUST_HOST: "true"
+      AUTH_URL: "http://localhost:3000"
+      UPLOAD_DIR: "public/uploads"
+      SMTP_HOST: "mailhog"
+      SMTP_PORT: "1025"
+      SMTP_FROM: "Evraziya <noreply@evraziya.local>"
+    ports:
+      - "3000:3000"
+    volumes:
+      - uploads:/app/public/uploads
+
   postgres:
     image: postgres:16-alpine
     container_name: volonter_pg
@@ -28,3 +52,4 @@ services:
 
 volumes:
   pgdata:
+  uploads:
