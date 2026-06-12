@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/layout/brand-logo";
 
 /** Лэйаут экранов входа/регистрации: брендовая шапка + центрированная карточка. */
 export default function AuthLayout({
@@ -11,21 +12,8 @@ export default function AuthLayout({
       {/* Тонкая брендовая шапка с hairline-разделителем. */}
       <header className="border-b border-border">
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span
-              className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
-              aria-hidden
-            >
-              Е
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="text-[0.9375rem] font-bold tracking-[-0.02em]">
-                Евразия
-              </span>
-              <span className="mt-0.5 hidden text-[0.625rem] font-medium uppercase tracking-[0.08em] text-muted sm:inline">
-                Континент возможностей
-              </span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <BrandLogo descriptor />
           </Link>
         </div>
       </header>

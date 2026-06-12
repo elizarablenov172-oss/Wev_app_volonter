@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { BalanceChip } from "@/components/domain/balance-chip";
 import { NotificationBell } from "@/components/domain/notification-bell";
 import { getNavForRole, type NavItem } from "./nav-config";
+import { BrandLogo } from "./brand-logo";
 
 export interface AppShellUser {
   displayName: string;
@@ -116,21 +117,8 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur-md">
       <div className="flex h-14 w-full items-center justify-between gap-3 px-4 md:px-6 lg:px-10 xl:px-14">
-        <Link href="/feed" className="flex items-center gap-2.5">
-          <span
-            className="flex size-7 items-center justify-center rounded-sm bg-primary text-[0.9375rem] font-extrabold leading-none text-on-primary"
-            aria-hidden
-          >
-            Е
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="text-[0.9375rem] font-bold tracking-[-0.02em] text-foreground">
-              Евразия
-            </span>
-            <span className="mt-0.5 hidden text-[0.625rem] font-medium uppercase tracking-[0.08em] text-muted sm:inline">
-              Континент возможностей
-            </span>
-          </span>
+        <Link href="/feed" className="flex items-center">
+          <BrandLogo descriptor />
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
