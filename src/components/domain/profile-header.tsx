@@ -34,6 +34,8 @@ export interface ProfileHeaderProps {
   userId: string;
   /** Свой профиль → кнопка «Редактировать»; чужой → «Добавить»/«Написать». */
   isOwner: boolean;
+  /** Показывать статистику (мероприятия/друзья/баланс) — только для волонтёра. */
+  showStats?: boolean;
   /**
    * Компоновка на десктопе (≥lg):
    *  • "wide" — карточка в ряд (когда занимает всю ширину);
@@ -73,6 +75,7 @@ export function ProfileHeader({
   stats,
   userId,
   isOwner,
+  showStats = true,
   layout = "wide",
 }: ProfileHeaderProps) {
   const compact = layout === "compact";
@@ -170,8 +173,8 @@ export function ProfileHeader({
         </div>
       </div>
 
-      {/* Статистика. На мобиле/wide — табличный ряд из трёх колонок;
-          в compact на десктопе — вертикальный список (1 колонка). */}
+      {/* Статистика (мероприятия/друзья/баланс) — только для волонтёра. */}
+      {showStats && (
       <dl
         className={cn(
           "grid grid-cols-3 divide-x divide-border border-t border-border",
@@ -198,6 +201,7 @@ export function ProfileHeader({
           compact={compact}
         />
       </dl>
+      )}
     </section>
   );
 }

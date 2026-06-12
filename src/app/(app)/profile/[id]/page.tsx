@@ -55,10 +55,17 @@ export default async function PublicProfilePage({
 
   const hasContactsBlock =
     (showContacts && Boolean(user.contactPhone)) || socialLinks.length > 0;
+  const targetIsVolunteer = user.role === "VOLUNTEER";
 
   return (
-    // ПК (≥lg): личность слева (липкая), активность справа. Телефон (<lg): стопка.
-    <div className="lg:grid lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start lg:gap-6">
+    // Волонтёр: 2 колонки (личность + активность). Иначе — одна колонка.
+    <div
+      className={
+        targetIsVolunteer
+          ? "lg:grid lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start lg:gap-6"
+          : "mx-auto max-w-2xl space-y-5"
+      }
+    >
       {/* Левая колонка — личность */}
       <div className="space-y-5 lg:sticky lg:top-20">
         <ProfileHeader
@@ -70,6 +77,7 @@ export default async function PublicProfilePage({
           levelName={user.level?.name}
           userId={user.id}
           isOwner={false}
+          showStats={targetIsVolunteer}
           stats={{
             events: eventsCount,
             friends: friendsCount,
@@ -140,17 +148,19 @@ export default async function PublicProfilePage({
         )}
       </div>
 
-      {/* Правая колонка — активность */}
-      <div className="mt-5 space-y-3 lg:mt-0">
-        <h2 className="text-sm font-bold tracking-[-0.01em]">Активность</h2>
-        {privacy.feed === "PUBLIC" ? (
-          <ActivityFeed userId={user.id} isOwner={false} />
-        ) : (
-          <div className="rounded-lg border border-dashed border-border-strong bg-surface px-6 py-10 text-center text-sm text-muted">
-            Пользователь скрыл ленту активности настройками приватности.
-          </div>
-        )}
-      </div>
+      {/* Правая колонка — активность (только у волонтёра) */}
+      {targetIsVolunteer && (
+        <div className="mt-5 space-y-3 lg:mt-0">
+          <h2 className="text-sm font-bold tracking-[-0.01em]">Активность</h2>
+          {privacy.feed === "PUBLIC" ? (
+            <ActivityFeed userId={user.id} isOwner={false} />
+          ) : (
+            <div className="rounded-lg border border-dashed border-border-strong bg-surface px-6 py-10 text-center text-sm text-muted">
+              Пользователь скрыл ленту активности настройками приватности.
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

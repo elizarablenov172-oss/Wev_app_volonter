@@ -90,8 +90,12 @@ export async function PATCH(request: Request) {
     throw error;
   }
 
-  // Начисляем токены за заполнение профиля (идемпотентно).
-  const { awarded, balance } = await evaluateAndAwardProfile(auth.id);
+  // Начисляем токены за заполнение профиля — только волонтёрам (идемпотентно).
+  // Админ/организация/партнёр токенов не зарабатывают.
+  const { awarded, balance } =
+    auth.role === "VOLUNTEER"
+      ? await evaluateAndAwardProfile(auth.id)
+      : { awarded: 0, balance: 0 };
 
   const user = await prisma.user.findUnique({
     where: { id: auth.id },

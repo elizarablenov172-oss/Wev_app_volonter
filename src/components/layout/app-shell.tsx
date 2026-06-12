@@ -122,14 +122,16 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
         </Link>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Чип «кошелёк» с балансом токенов (янтарь — только фон+иконка, текст тёмный). */}
-          <Link
-            href="/wallet"
-            aria-label="Кошелёк"
-            className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
-          >
-            <BalanceChip value={user.balance} />
-          </Link>
+          {/* Чип «кошелёк» с балансом токенов — только у волонтёра. */}
+          {user.role === "VOLUNTEER" && (
+            <Link
+              href="/wallet"
+              aria-label="Кошелёк"
+              className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
+            >
+              <BalanceChip value={user.balance} />
+            </Link>
+          )}
 
           <NotificationBell />
 
