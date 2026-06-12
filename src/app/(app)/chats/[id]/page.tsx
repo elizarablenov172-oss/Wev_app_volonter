@@ -38,7 +38,10 @@ export default function ChatConversationPage() {
 
   const load = React.useCallback(async () => {
     try {
-      const r = await fetch(`/api/dialogs/${dialogId}/messages`, { credentials: "same-origin" });
+      const r = await fetch(`/api/dialogs/${dialogId}/messages`, {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
       if (r.status === 403 || r.status === 404) {
         setNotFound(true);
         return;

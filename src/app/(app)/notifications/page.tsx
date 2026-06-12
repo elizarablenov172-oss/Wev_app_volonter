@@ -30,7 +30,7 @@ export default function NotificationsPage() {
 
   const load = React.useCallback(async () => {
     try {
-      const r = await fetch("/api/notifications", { credentials: "same-origin" });
+      const r = await fetch("/api/notifications", { credentials: "same-origin", cache: "no-store" });
       const d = await r.json();
       setItems(d.items ?? []);
     } catch {

@@ -20,6 +20,7 @@ export function WalletHistory() {
     async (signal: AbortSignal): Promise<WalletTransaction[]> => {
       const res = await fetch("/api/wallet/history", {
         credentials: "same-origin",
+        cache: "no-store",
         signal,
       });
       const data = await res.json().catch(() => ({}));

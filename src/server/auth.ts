@@ -63,7 +63,9 @@ export async function createSession(
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    // Secure включаем только при работе по HTTPS (COOKIE_SECURE=true).
+    // По умолчанию выключено — приложение раздаётся по HTTP (Docker/localhost/LAN).
+    secure: process.env.COOKIE_SECURE === "true",
     sameSite: "lax",
     path: "/",
     maxAge: SESSION_MAX_AGE_SECONDS,

@@ -15,7 +15,10 @@ export function NotificationBell() {
 
   const load = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/notifications", { credentials: "same-origin" });
+      const res = await fetch("/api/notifications", {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
       if (!res.ok) return;
       const data = await res.json();
       setCount(data.unreadCount ?? 0);

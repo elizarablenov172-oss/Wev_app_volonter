@@ -85,7 +85,7 @@ export default function FriendsPage() {
   const [results, setResults] = React.useState<SearchRow[] | null>(null);
 
   const load = React.useCallback(async () => {
-    const r = await fetch("/api/friends", { credentials: "same-origin" });
+    const r = await fetch("/api/friends", { credentials: "same-origin", cache: "no-store" });
     setData(await r.json());
   }, []);
   React.useEffect(() => {
@@ -150,7 +150,7 @@ export default function FriendsPage() {
       setResults(null);
       return;
     }
-    const r = await fetch(`/api/users/search?q=${encodeURIComponent(q)}`, { credentials: "same-origin" });
+    const r = await fetch(`/api/users/search?q=${encodeURIComponent(q)}`, { credentials: "same-origin", cache: "no-store" });
     const d = await r.json();
     setResults(d.items ?? []);
   }, []);

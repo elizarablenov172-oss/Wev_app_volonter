@@ -24,7 +24,10 @@ export default function ChatsPage() {
     let alive = true;
     const load = async () => {
       try {
-        const r = await fetch("/api/dialogs", { credentials: "same-origin" });
+        const r = await fetch("/api/dialogs", {
+          credentials: "same-origin",
+          cache: "no-store",
+        });
         const d = await r.json();
         if (alive) setItems(d.items ?? []);
       } catch {

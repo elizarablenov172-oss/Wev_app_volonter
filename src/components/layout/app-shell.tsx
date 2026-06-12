@@ -171,10 +171,28 @@ function TopBar({ user, menuOpen, onToggleMenu, onLogout, loggingOut }: TopBarPr
                 <Link
                   href="/profile"
                   role="menuitem"
+                  onClick={onToggleMenu}
                   className="block px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-surface-muted"
                 >
                   Мой профиль
                 </Link>
+                {/* Соц-разделы волонтёра — доступ с телефона (в нижнем меню нет места). */}
+                {user.role === "VOLUNTEER" &&
+                  [
+                    { href: "/wallet", label: "Кошелёк" },
+                    { href: "/friends", label: "Друзья" },
+                    { href: "/chats", label: "Чаты" },
+                  ].map((i) => (
+                    <Link
+                      key={i.href}
+                      href={i.href}
+                      role="menuitem"
+                      onClick={onToggleMenu}
+                      className="block px-3.5 py-2.5 text-sm font-medium transition-colors hover:bg-surface-muted"
+                    >
+                      {i.label}
+                    </Link>
+                  ))}
                 <div className="border-t border-border">
                   <button
                     type="button"
