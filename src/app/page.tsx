@@ -55,13 +55,6 @@ const FEATURES = [
   },
 ] as const;
 
-/** Ключевые метрики — табличная подача, как в финтех-дашборде. */
-const STATS = [
-  { value: "4", label: "роли в системе" },
-  { value: "100%", label: "история начислений" },
-  { value: "QR", label: "чек-ин на месте" },
-] as const;
-
 export default function Home() {
   return (
     <main className="min-h-dvh bg-background">
@@ -114,18 +107,6 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-
-            {/* Метрики — табличный ряд, моноширинные цифры. */}
-            <dl className="mt-10 grid max-w-md grid-cols-3 divide-x divide-border border-y border-border">
-              {STATS.map((s) => (
-                <div key={s.label} className="px-4 py-3 first:pl-0">
-                  <dd className="tabular text-2xl font-extrabold tracking-[-0.02em]">
-                    {s.value}
-                  </dd>
-                  <dt className="mt-0.5 text-xs text-muted">{s.label}</dt>
-                </div>
-              ))}
-            </dl>
           </div>
 
           {/* Превью «счёта» — банковская карточка баланса, держится на бордерах. */}
