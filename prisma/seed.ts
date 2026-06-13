@@ -75,7 +75,8 @@ async function upsertUser(opts: {
     ? await prisma.level.findFirst({ where: { name: levelName } })
     : null;
 
-  const data = {
+  // Каноничные поля профиля — их можно безопасно обновлять при каждом seed.
+  const updateData = {
     role,
     displayName,
     passwordHash,
@@ -91,14 +92,21 @@ async function upsertUser(opts: {
       socials: true,
       feed: "PUBLIC",
     } as unknown as Prisma.InputJsonValue,
-    cachedBalance: balance,
-    levelId: level?.id ?? null,
   };
 
+  // ВАЖНО: cachedBalance/levelId выставляем ТОЛЬКО при создании. seed запускается
+  // при каждом старте контейнера; если переносить их в `update`, повторный seed
+  // сбросил бы баланс к сумме сид-транзакций и стёр всё, что пользователь заработал
+  // после сидинга (журнал — источник истины, кэш ведёт ledger-сервис).
   const user = await prisma.user.upsert({
     where: { email },
-    update: data,
-    create: { email, ...data },
+    update: updateData,
+    create: {
+      email,
+      ...updateData,
+      cachedBalance: balance,
+      levelId: level?.id ?? null,
+    },
   });
 
   // Журнал транзакций — пересоздаём с детерминированными idempotencyKey,
